@@ -439,7 +439,19 @@ static final String sFileName = "Login.jsp";
           String sLogin = getParam( request, "Login");
           String sPassword = getParam( request, "Password");
           java.sql.ResultSet rs = null;
-          rs = openrs( stat, "select member_id, member_level from members where member_login =" + toSQL(sLogin, adText) + " and member_password=" + toSQL(sPassword, adText));
+          
+          //Yalin Remedation ///
+          
+         // rs = openrs( stat, "select member_id, member_level from members where member_login =" + toSQL(sLogin, adText) + " and member_password=" + toSQL(sPassword, adText));
+                   
+          
+          PreparedStatement stat = conn.prepareStatement("SELECT member_id, member_level from members where member_login = ?  and member_password = ?");
+          stat.setString(1, sLogin);
+          stat.setString(1, sPassword);
+          rs = openrs(stat);
+          
+          
+          
           
           if ( rs.next() ) {
             // Login and password passed
